@@ -8,7 +8,13 @@ angular.module('confusionApp')
             $scope.filtText = '';
             $scope.showDetails = false;
 
-            $scope.dishes= menuFactory.getDishes();
+            $scope.dishes= {};
+            menuFactory.getDishes()
+            .then(
+                function(response) {
+                    $scope.dishes = response.data;
+                }
+            );
             
 
                         
@@ -71,7 +77,14 @@ angular.module('confusionApp')
 
         .controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', function($scope, $stateParams, menuFactory) {
             
-            $scope.dish = menuFactory.getDish(parseInt($stateParams.id,10));
+            $scope.dish = {};
+            menuFactory.getDish(parseInt($stateParams.id,10))
+            .then(
+                function(response){
+                    $scope.dish = response.data;
+                    $scope.showDish=true;
+                }
+            );
             
         }])
 
@@ -96,7 +109,14 @@ angular.module('confusionApp')
         .controller('IndexController', ['$scope', 'menuFactory', 'corporateFactory', function($scope, menuFactory, corporateFactory){
            
 
-            $scope.featuredDish = menuFactory.getDish(0)
+            $scope.featuredDish = {};
+            menuFactory.getDish(0)
+            .then(
+                function(response){
+                    $scope.featuredDish = response.data;
+                    $scope.showDish = true;
+                }
+            );
             
              $scope.featuredPromotion = menuFactory.getPromotion(0);
             $scope.executiveChef = corporateFactory.getLeader(3);
